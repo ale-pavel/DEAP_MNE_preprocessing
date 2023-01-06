@@ -7,7 +7,7 @@ import pickle
 import argparse
 import numpy as np
 import pandas as pd
-import mne_features
+# import mne_features
 from scipy import signal
 import matplotlib.pyplot as plt
 
@@ -25,10 +25,10 @@ freq_bands = np.array([4.0, 8.0, 13.0, 30.0, 45.0])
 N_bands = len(freq_bands) - 1
 target_names = ['Arousal', 'Valence', 'Liking', 'Dominance']
 
-root_folder = '/home/george/Research/datasets/DEAP/data_original'
-ratings_csv_path = os.path.join(os.getcwd(), 'metadata_csv', 'participant_ratings.csv')
+root_folder = '../../datasets/DEAP/'
+ratings_csv_path = root_folder + 'metadata_csv/participant_ratings.csv'
 
-npy_folder = os.path.join(os.getcwd(), 'results', 'npy')
+npy_folder = root_folder + 'data_preprocessed_python'
 feats_folder = os.path.join(os.getcwd(), 'features_new')
 
 def get_DASM_electrode_indices():
@@ -296,9 +296,11 @@ def extract_features(subject_id):
 	print('\nExtracting features for Subject {:02}'.format(subject_id))
 
 	# Load data
-	npy_file_path = os.path.join(npy_folder, 's{:02d}.npy'.format(subject_id))
-	print('Loading preprocessed EEG from .npy file {}\n'.format(npy_file_path))
-	data = np.load(npy_file_path)
+	npy_file_path = os.path.join(npy_folder, 's{:02d}.dat'.format(subject_id))
+	print('Loading preprocessed EEG from .dat file {}\n'.format(npy_file_path))
+	encoding = 'latin1'
+	data = pickle.load(open(npy_file_path, 'rb'), encoding=encoding)['data'][:, :32]
+	# data = np.load(npy_file_path)
 
 	# Load ratings
 	ratings = pd.read_csv(ratings_csv_path)

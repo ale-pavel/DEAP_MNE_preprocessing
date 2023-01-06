@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source ~/anaconda3/etc/profile.d/conda.sh
+conda activate eeg
+
 feats_folder="./features_new"
 if [ -d $feats_folder ]
 then
